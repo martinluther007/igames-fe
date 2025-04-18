@@ -3,8 +3,11 @@
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import ServiceConfig from "@/utils/constants/service.constants";
 
-const BASE_URL = process.env.BASE_URL;
+const BASE_URL = ServiceConfig.BASE_URL;
+
+console.log(ServiceConfig.BASE_URL);
 
 const Page = () => {
   const [username, setUsername] = useState("");

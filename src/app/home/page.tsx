@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 
 import SocketHandler from "@/utils/socket";
 const socket = SocketHandler.getSocketInstance();
-console.log(ServiceConfig.BASE_URL);
 
 const Page = () => {
   const [token, setToken] = useState<string | null>(null);
