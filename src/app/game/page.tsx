@@ -11,6 +11,7 @@ const Page = () => {
   const [winningNumber, setWinningNumber] = useState<number | null>(0);
   const [countdown, setCountdown] = useState(null);
   const [userAnswer, setUserAnswer] = useState<string>("");
+  const [submittedAnswer, setSubmittedAnswer] = useState<string>("");
   const [user, setUser] = useState<IUser | null>(null);
 
   const [winners, setWinners] = useState<
@@ -65,6 +66,7 @@ const Page = () => {
   const handleSubmit = () => {
     if (!countdown) return alert("Session has ended");
     if (!userAnswer) return alert("Please put in a number");
+    setSubmittedAnswer(userAnswer);
     socket.emit("user_answer", { token, number: userAnswer });
   };
 
@@ -110,7 +112,7 @@ const Page = () => {
               <p className="text-xs uppercase font-bold">
                 Pic a random number from 1 - 9
               </p>
-              <p>Selection :{userAnswer}</p>
+              <p>Selection :{submittedAnswer}</p>
               <input
                 type="number"
                 className="border focus:outline-none placeholder:font-normal min-w-[300px] rounded-lg px-4 py-1.5 font-semibold placeholder:text-[#555] text-sm"
