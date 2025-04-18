@@ -40,7 +40,7 @@ const Page = () => {
       );
 
       if (userInWinners) {
-        alert("You won ");
+        alert("You won");
       } else {
         alert("You lost");
       }
@@ -110,6 +110,7 @@ const Page = () => {
               <p className="text-xs uppercase font-bold">
                 Pic a random number from 1 - 9
               </p>
+              <p>Selection :{userAnswer}</p>
               <input
                 type="number"
                 className="border focus:outline-none placeholder:font-normal min-w-[300px] rounded-lg px-4 py-1.5 font-semibold placeholder:text-[#555] text-sm"
