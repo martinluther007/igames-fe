@@ -28,11 +28,12 @@ This is the React frontend for the iGaming assignment. It interacts with the bac
 ## 🔧 Setup Instructions
 
 1. **Install dependencies**:
+
    ```bash
    npm install
    ```
 
-First, run the development server:
+2. **run the development server**:
 
 ```bash
 npm run dev
