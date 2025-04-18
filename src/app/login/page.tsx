@@ -7,8 +7,6 @@ import ServiceConfig from "@/utils/constants/service.constants";
 
 const BASE_URL = ServiceConfig.BASE_URL;
 
-console.log(ServiceConfig.BASE_URL);
-
 const Page = () => {
   const [username, setUsername] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +24,7 @@ const Page = () => {
       });
       const token = data.token;
       const user = data.data.user;
-      console.log(token, user);
+
       localStorage.setItem("auth_token", token);
       localStorage.setItem("user", JSON.stringify(user));
       router.push("/home");

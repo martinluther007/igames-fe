@@ -59,12 +59,20 @@ const Page = () => {
         <p>Hi {user?.userName}</p>
       </div>
       <div className="  flex flex-col gap-4 items-center justify-center h-full">
-        <p className="text-xs uppercase font-bold">
-          Total wins : {stats?.wins}
-        </p>
-        <p className="text-xs uppercase font-bold">
-          Total Losses: {stats?.losses}
-        </p>
+        {stats.wins ? (
+          <p className="text-xs uppercase font-bold">
+            Total wins : {stats?.wins}
+          </p>
+        ) : (
+          <p className="text-xs uppercase font-bold">Loading...</p>
+        )}
+        {stats.losses ? (
+          <p className="text-xs uppercase font-bold">
+            Total Losses: {stats?.losses}
+          </p>
+        ) : (
+          <p className="text-xs uppercase font-bold">Loading...</p>
+        )}
 
         <button
           onClick={joinGame}

@@ -34,6 +34,16 @@ const Page = () => {
     });
     socket.on("session_end", ({ answer, winners }) => {
       setWinningNumber(answer);
+
+      const userInWinners = winners.find(
+        (winner: { username: string }) => winner.username === user?.userName
+      );
+
+      if (userInWinners) {
+        alert("You won ");
+      } else {
+        alert("You lost");
+      }
       setWinners(winners);
     });
 
