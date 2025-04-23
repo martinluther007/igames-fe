@@ -9,7 +9,7 @@ const socket = SocketHandler.getSocketInstance();
 const Page = () => {
   const [token, setToken] = useState<string | null>(null);
   const [playerCount, setPlayerCount] = useState(0);
-  const [winningNumber, setWinningNumber] = useState<number | null>(0);
+  const [winningNumber, setWinningNumber] = useState<number | null>(null);
   const [countdown, setCountdown] = useState(null);
   const [timeTillNewSession, setTimeTillNewSession] = useState(null);
   const [userAnswer, setUserAnswer] = useState<string>("");
