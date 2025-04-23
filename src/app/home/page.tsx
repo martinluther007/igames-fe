@@ -87,7 +87,9 @@ const Page = () => {
                 : "There is currently no active session"}
             </p>
             <p className="text-red-500">
-              new session starts in {timeTillNewSession}{" "}
+              {timeTillNewSession
+                ? `new session starts in ${timeTillNewSession} s`
+                : ""}
             </p>
           </div>
         ) : (
