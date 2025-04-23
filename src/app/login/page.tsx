@@ -44,7 +44,6 @@ const Page = () => {
   return (
     <main className="bg-[#000] h-screen bg-[linear-gradient(to_right,_#0f2027,_#203a43,_#2c5364)] flex flex-col items-center justify-center w-full">
       <form className="bg-white shadow-2xl rounded-xl flex flex-col gap-5 p-20">
-        <p>{isLoading && "Loading, Please wait......."}</p>
         <input
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Enter your username"
