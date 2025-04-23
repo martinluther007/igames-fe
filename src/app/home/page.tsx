@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import SocketHandler from "@/utils/socket";
+import { showError } from "@/utils/helpers";
+import { ClipLoader } from "react-spinners";
 const socket = SocketHandler.getSocketInstance();
 
 const Page = () => {
@@ -48,7 +50,7 @@ const Page = () => {
   }, []);
 
   const joinGame = () => {
-    if (!countdown) return alert("There is currently no active session");
+    if (!countdown) return showError("There is currently no active session");
     socket.emit("join_game", { token, name: user?.userName });
     router.push("/game");
   };
@@ -56,36 +58,33 @@ const Page = () => {
   return (
     <main className="h-screen relative bg-gray-300">
       <div className=" absolute right-10 top-10 flex flex-col  justify-center gap-4 px-8 text-center">
-        <p>Hi {user?.userName}</p>
+        <p className="capitalize">Hi {user?.userName}</p>
       </div>
-      <div className="  flex flex-col gap-4 items-center justify-center h-full">
-        {stats.wins ? (
-          <p className="text-xs uppercase font-bold">
-            Total wins : {stats?.wins}
-          </p>
-        ) : (
-          <p className="text-xs uppercase font-bold">Loading...</p>
-        )}
-        {stats.losses ? (
-          <p className="text-xs uppercase font-bold">
-            Total Losses: {stats?.losses}
-          </p>
-        ) : (
-          <p className="text-xs uppercase font-bold">Loading...</p>
-        )}
+      <div className="flex flex-col gap-4 items-center justify-center h-full">
+        {stats?.wins ? (
+          <div className="  flex flex-col gap-4 items-center justify-center h-full">
+            <p className=" uppercase font-bold">Total wins : {stats?.wins}</p>
 
-        <button
-          onClick={joinGame}
-          className="px-4 py-1.5 bg-[#555] cursor-pointer capitalize text-white min-w-[150px]"
-        >
-          join
-        </button>
+            <p className=" uppercase font-bold">
+              Total Losses: {stats?.losses}
+            </p>
 
-        <p className="text-red-500">
-          {countdown
-            ? `There is an active session you can join in ${countdown} s`
-            : "There is currently no active session"}
-        </p>
+            <button
+              onClick={joinGame}
+              className="px-4 py-1.5 bg-black font-semibold hover:bg-[#555] transition-all cursor-pointer capitalize text-white min-w-[150px]"
+            >
+              join
+            </button>
+
+            <p className="text-red-500">
+              {countdown
+                ? `There is an active session you can join in ${countdown} s`
+                : "There is currently no active session"}
+            </p>
+          </div>
+        ) : (
+          <ClipLoader />
+        )}
       </div>
     </main>
   );

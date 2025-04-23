@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import ServiceConfig from "@/utils/constants/service.constants";
+import { showError, showLoading } from "@/utils/helpers";
 
 const BASE_URL = ServiceConfig.BASE_URL;
 
@@ -17,7 +18,9 @@ const Page = () => {
   ): Promise<void> => {
     e.preventDefault();
     try {
-      if (!username) return alert("Username is required to proceed");
+      if (!username) return showError("Username is required to proceed");
+      showLoading("Loading, Please wait.......");
+      setIsLoading(true);
 
       const { data } = await axios.post(`${BASE_URL}/auth/register`, {
         username,
@@ -28,14 +31,12 @@ const Page = () => {
       localStorage.setItem("auth_token", token);
       localStorage.setItem("user", JSON.stringify(user));
       router.push("/home");
-
-      setIsLoading(true);
     } catch (error) {
       const message =
         axios.isAxiosError(error) && error.response?.data?.message
           ? error.response.data.message
           : "Something went wrong";
-      alert(message);
+      showError(message);
     } finally {
       setIsLoading(false);
     }

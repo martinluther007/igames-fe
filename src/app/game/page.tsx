@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import SocketHandler from "@/utils/socket";
 import IUser from "@/Interface/user.interface";
+import { showError, showInfo, showSuccess } from "@/utils/helpers";
 const socket = SocketHandler.getSocketInstance();
 
 const Page = () => {
@@ -10,6 +11,7 @@ const Page = () => {
   const [playerCount, setPlayerCount] = useState(0);
   const [winningNumber, setWinningNumber] = useState<number | null>(0);
   const [countdown, setCountdown] = useState(null);
+  const [timeTillNewSession, setTimeTillNewSession] = useState(null);
   const [userAnswer, setUserAnswer] = useState<string>("");
   const [submittedAnswer, setSubmittedAnswer] = useState<string>("");
   const [user, setUser] = useState<IUser | null>(null);
@@ -31,6 +33,10 @@ const Page = () => {
   useEffect(() => {
     socket.on("session_start", () => {
       setWinningNumber(null);
+      setUserAnswer("");
+      setSubmittedAnswer("");
+      setCountdown(null);
+      setWinners([]);
       socket.emit("join_game", { token, name: user?.userName });
     });
     socket.on("session_end", ({ answer, winners }) => {
@@ -41,9 +47,9 @@ const Page = () => {
       );
 
       if (userInWinners) {
-        alert("You won");
+        showSuccess("You won", 2000);
       } else {
-        alert("You lost");
+        showError("You Lost", 2000);
       }
       setWinners(winners);
     });
@@ -53,6 +59,9 @@ const Page = () => {
     });
 
     socket.on("countdown_tick", ({ timeLeft }) => setCountdown(timeLeft));
+    socket.on("time_till_new_session", ({ timeToStart }) =>
+      setTimeTillNewSession(timeToStart)
+    );
 
     return () => {
       socket.off("numOfPlayers");
@@ -64,8 +73,8 @@ const Page = () => {
   }, [token, playerCount, user]);
 
   const handleSubmit = () => {
-    if (!countdown) return alert("Session has ended");
-    if (!userAnswer) return alert("Please put in a number");
+    if (!countdown) return showInfo("Session has ended");
+    if (!userAnswer) return showError("Please put in a number");
     setSubmittedAnswer(userAnswer);
     socket.emit("user_answer", { token, number: userAnswer });
   };
@@ -73,46 +82,53 @@ const Page = () => {
   return (
     <main className="h-screen bg-gray-300">
       <>
-        {winningNumber ? (
+        {winningNumber || !countdown ? (
           <div className="flex border h-full">
             <div className="flex-1 flex flex-col justify-center h-full">
               <div className="flex items-center justify-center flex-col gap-4">
                 <p>Result</p>
-                <p>{winningNumber}</p>
+                <p className="text-xl font-semibold">{winningNumber}</p>
               </div>
 
-              <div className="flex mt-20 flex-col items-center justify-center">
-                <p>total players : {playerCount}</p>
-                <p>total wins : {winners.length}</p>
+              <div className="flex mt-20 flex-col gap-3 items-center justify-center">
+                <p className="capitalize">total players : {playerCount}</p>
+                <p className="capitalize">total wins : {winners.length}</p>
+                <p className="text-red-500">
+                  new session starts in {timeTillNewSession}{" "}
+                </p>
               </div>
             </div>
             <div className="bg-gray-500">
-              <h4 className="text-lg text-green-500 min-w-[300px] text-center">
+              <h4 className="text-lg capitalize font-semibold mt-10 text-green-500 min-w-[300px] text-center">
                 winners
               </h4>
 
-              <div className="flex items-center mt-20 flex-col gap-4 text-lg">
-                {winners.map((winner) => (
-                  <p className="text-white" key={winner.username}>
-                    {winner.username}
-                  </p>
-                ))}
-              </div>
+              {!!winners.length ? (
+                <div className="flex items-center mt-20 flex-col gap-4 text-lg">
+                  {winners.map((winner) => (
+                    <p className="text-white" key={winner.username}>
+                      {winner.username}
+                    </p>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-center text-white mt-10">
+                  There are no winners in this session
+                </p>
+              )}
             </div>
           </div>
         ) : (
           <div className="relative h-full">
             <div className=" absolute right-10 top-10 flex flex-col  justify-center gap-4 px-8 text-center">
-              <p>countdown timer</p>
-              <p>
-                {countdown ? `${countdown} seconds` : "Game not started yet"}{" "}
+              <p className="capitalize">countdown timer</p>
+              <p className="text-lg font-semibold">
+                {countdown ? `${countdown}` : "Game not started yet"}{" "}
               </p>
             </div>
             <div className="  flex flex-col gap-4 items-center justify-center h-full">
-              <p className="text-xs uppercase font-bold">
-                Pic a random number from 1 - 9
-              </p>
-              <p>Selection :{submittedAnswer}</p>
+              <p className="text-lg  ">Pick a random number from 1 - 9</p>
+              <p className="">Your Answer :{submittedAnswer}</p>
               <input
                 type="number"
                 className="border focus:outline-none placeholder:font-normal min-w-[300px] rounded-lg px-4 py-1.5 font-semibold placeholder:text-[#555] text-sm"
@@ -127,7 +143,7 @@ const Page = () => {
               />
               <button
                 onClick={handleSubmit}
-                className="bg-[#555] cursor-pointer min-w-[300px] px-3 py-1.5 text-white"
+                className="bg-[#000] hover:bg-[#555] font-semibold transition-all cursor-pointer min-w-[300px] px-3 py-1.5 text-white"
               >
                 Enter
               </button>
