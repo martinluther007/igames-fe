@@ -41,7 +41,6 @@ const Page = () => {
     });
     socket.on("session_end", ({ answer, winners }) => {
       setWinningNumber(answer);
-      console.log(winners);
 
       const userInWinners = winners.find(
         (winner: { username: string }) => winner.username === user?.userName
@@ -59,7 +58,10 @@ const Page = () => {
       setPlayerCount(count);
     });
 
-    socket.on("countdown_tick", ({ timeLeft }) => setCountdown(timeLeft));
+    socket.on("countdown_tick", ({ timeLeft }) => {
+      setCountdown(timeLeft);
+      console.log(timeLeft);
+    });
     socket.on("time_till_new_session", ({ timeToStart }) =>
       setTimeTillNewSession(timeToStart)
     );
