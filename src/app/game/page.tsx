@@ -60,7 +60,6 @@ const Page = () => {
 
     socket.on("countdown_tick", ({ timeLeft }) => {
       setCountdown(timeLeft);
-      console.log(timeLeft);
     });
     socket.on("time_till_new_session", ({ timeToStart }) =>
       setTimeTillNewSession(timeToStart)

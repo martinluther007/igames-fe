@@ -17,6 +17,7 @@ const Page = () => {
   const [user, setUser] = useState<IUser | null>(null);
   const [stats, setStats] = useState<IUserStats>({});
   const [countdown, setCountdown] = useState(null);
+  const [timeTillNewSession, setTimeTillNewSession] = useState(null);
 
   const router = useRouter();
 
@@ -44,8 +45,12 @@ const Page = () => {
 
   useEffect(() => {
     socket.on("countdown_tick", ({ timeLeft }) => setCountdown(timeLeft));
+    socket.on("time_till_new_session", ({ timeToStart }) =>
+      setTimeTillNewSession(timeToStart)
+    );
     return () => {
       socket.off("countdown_tick");
+      socket.off("time_till_new_session");
     };
   }, []);
 
@@ -80,6 +85,9 @@ const Page = () => {
               {countdown
                 ? `There is an active session you can join in ${countdown} s`
                 : "There is currently no active session"}
+            </p>
+            <p className="text-red-500">
+              new session starts in {timeTillNewSession}{" "}
             </p>
           </div>
         ) : (
