@@ -52,7 +52,7 @@ const Page = () => {
         <button
           onClick={login}
           disabled={isLoading}
-          className="bg-cyan-500 disabled:opacity-20 hover:bg-cyan-600 transition-all cursor-pointer rounded-2xl text-white py-1.5 px-4"
+          className="bg-cyan-500 disabled:opacity-40 font-bold capitalize hover:bg-cyan-600 transition-all cursor-pointer rounded-2xl text-white py-1.5 px-4"
         >
           submit
         </button>
