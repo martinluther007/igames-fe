@@ -84,7 +84,7 @@ const Page = () => {
   return (
     <main className="h-screen bg-gray-300">
       <>
-        {winningNumber || !countdown ? (
+        {winningNumber ? (
           <div className="flex border h-full">
             <div className="flex-1 flex flex-col justify-center h-full">
               <div className="flex items-center justify-center flex-col gap-4">
