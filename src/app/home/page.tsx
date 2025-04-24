@@ -38,6 +38,7 @@ const Page = () => {
         },
       })
       .then(({ data }) => {
+        console.log(data);
         setStats(data.data);
       })
       .catch((err) => console.log(err));
@@ -66,7 +67,7 @@ const Page = () => {
         <p className="capitalize">Hi {user?.userName}</p>
       </div>
       <div className="flex flex-col gap-4 items-center justify-center h-full">
-        {stats?.wins ? (
+        {stats?.wins !== undefined && stats?.wins >= 0 ? (
           <div className="  flex flex-col gap-4 items-center justify-center h-full">
             <p className=" uppercase font-bold">Total wins : {stats?.wins}</p>
 
