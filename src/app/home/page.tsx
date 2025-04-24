@@ -38,7 +38,6 @@ const Page = () => {
         },
       })
       .then(({ data }) => {
-        console.log(data);
         setStats(data.data);
       })
       .catch((err) => console.log(err));
